@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net"
 )
 
@@ -18,10 +17,8 @@ func getConnect(config *Config) (*net.UDPConn, error) {
 }
 
 func sendMessage(conn *net.UDPConn, message string) {
-	// conn.Write([]byte("hello"))
-	// data := make([]byte, 1506)
 	conn.Write([]byte(message))
-	fmt.Println("send manage message: ", message)
+	log.Infof("send manage message: %s", message)
 }
 
 func sendPing(conn *net.UDPConn) {
@@ -31,7 +28,7 @@ func sendPing(conn *net.UDPConn) {
 func sendAddAccount(conn *net.UDPConn, account *Account) {
 	res, err := json.Marshal(account)
 	if err != nil {
-		fmt.Println("json err:", err)
+		log.Errorf("json err: %s", err)
 	}
 	sendMessage(conn, "add: "+string(res))
 }
@@ -45,7 +42,7 @@ func sendRemoveAccount(conn *net.UDPConn, account *Account) {
 	})
 
 	if err != nil {
-		fmt.Println("json err:", err)
+		log.Errorf("json err: %s", err)
 	}
 	sendMessage(conn, "remove: "+string(res))
 }
@@ -55,9 +52,9 @@ func receiveMessage(conn *net.UDPConn) {
 	for {
 		n, remoteAddr, err := conn.ReadFromUDP(data)
 		if err != nil {
-			fmt.Printf("error during read: %s", err)
+			log.Errorf("error during read: %s", err)
 		}
 
-		fmt.Printf("receive %s from <%s>\n", data[:n], remoteAddr)
+		log.Infof("receive %s from <%s>", data[:n], remoteAddr)
 	}
 }

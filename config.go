@@ -2,13 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"reflect"
 )
-
-const VERSION = "0.0.1"
 
 type Config struct {
 	ManagerServer string `json:"manager_server"`
@@ -70,8 +67,7 @@ func loadConfig(configFilePath string, cmdParamsConfig *Config) *Config {
 	if err != nil {
 		config = cmdParamsConfig
 		if !os.IsNotExist(err) {
-			fmt.Fprintf(os.Stderr, "error reading %s: %v\n", configFilePath, err)
-			os.Exit(1)
+			log.Fatalf("error reading %s: %v", configFilePath, err)
 		}
 	} else {
 		updateConfig(config, cmdParamsConfig)

@@ -1,23 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
+
+var version = "0.0.1"
+var log = logrus.New()
 
 func main() {
 	// 获取配置文件
 	params := parseCMDParams()
 	config := loadConfig(params.ConfigFilePath, params.Config)
 	if params.IsPrintVersion {
-		fmt.Println("shadowsocks adapter version", VERSION)
+		log.Infof("shadowsocks adapter version %s", version)
 		os.Exit(0)
 	}
 
 	conn, err := getConnect(config)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error during listen: %s\n", err)
+		log.Fatalf("error during listen: %s", err)
 	}
 	defer conn.Close()
 
