@@ -11,8 +11,9 @@ type Config struct {
 	ManagerServer string `json:"manager_server"`
 	ManagerPort   int    `json:"manager_port"`
 	APIURL        string `json:"api_url"`
-	NodeID        int    `json:"node_id"`
+	NodeID        string `json:"node_id"`
 	NodeToken     string `json:"node_token"`
+	SyncInterval  int    `json:"sync_interval"`
 }
 
 func loadConfigFromFile(path string) (config *Config, err error) {
