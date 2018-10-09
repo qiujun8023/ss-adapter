@@ -51,7 +51,7 @@ func doRequest(config *Config, req *http.Request, res interface{}) error {
 		return errors.New("response status is " + resp.Status)
 	}
 
-	log.Infof("response body %s", string(body))
+	log.Debugf("response body %s", string(body))
 	err = json.Unmarshal(body, res)
 	if err != nil {
 		log.Errorf("error during parse json: %s", err)
@@ -73,6 +73,7 @@ func uploadTraffic(config *Config, data []Traffic) error {
 	bodyReader := bytes.NewBuffer(jonBody)
 	req, _ := http.NewRequest(http.MethodPost, url, bodyReader)
 	req.Header.Add("Content-Type", "application/json")
-	// return doRequest(config, req)
-	return nil
+
+	var result map[string]interface{}
+	return doRequest(config, req, &result)
 }

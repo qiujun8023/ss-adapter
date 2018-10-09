@@ -47,7 +47,7 @@ func sendRemoveAccount(conn *net.UDPConn, account *Account) {
 	sendMessage(conn, "remove: "+string(res))
 }
 
-func receiveMessage(conn *net.UDPConn) {
+func handleMessage(conn *net.UDPConn) {
 	data := make([]byte, 1506)
 	for {
 		n, remoteAddr, err := conn.ReadFromUDP(data)

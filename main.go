@@ -11,12 +11,15 @@ var version = "0.0.1"
 var log = logrus.New()
 
 func main() {
-	// 获取配置文件
 	params := parseCMDParams()
-	config := loadConfig(params.ConfigFilePath, params.Config)
 	if params.IsPrintVersion {
 		log.Infof("shadowsocks adapter version %s", version)
 		os.Exit(0)
+	}
+
+	config, err := loadConfig(params.ConfigFilePath)
+	if err != nil {
+		log.Fatalf("error during load config, %v", err)
 	}
 
 	conn, err := getConnect(config)
@@ -25,8 +28,8 @@ func main() {
 	}
 	defer conn.Close()
 
-	go doSomething(conn, config)
-	go receiveMessage(conn)
+	go syncUser(conn, config)
+	go handleMessage(conn)
 
 	for {
 		sendPing(conn)
