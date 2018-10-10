@@ -4,13 +4,13 @@ import (
 	"flag"
 )
 
-type CMDParams struct {
+type cmdParams struct {
 	ConfigFilePath string
 	IsPrintVersion bool
 }
 
-func parseCMDParams() (params *CMDParams) {
-	params = &CMDParams{}
+func parseCMDParams() (params *cmdParams) {
+	params = &cmdParams{}
 
 	flag.BoolVar(&params.IsPrintVersion, "v", false, "print version")
 	flag.StringVar(&params.ConfigFilePath, "c", "config.json", "specify config file")

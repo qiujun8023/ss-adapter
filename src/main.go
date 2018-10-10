@@ -28,8 +28,7 @@ func main() {
 	}
 	defer conn.Close()
 
-	go syncUser(conn, config)
-	go handleMessage(conn)
+	go handleMessage(conn, config)
 
 	for {
 		sendPing(conn)

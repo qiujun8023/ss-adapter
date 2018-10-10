@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-type Config struct {
+type jsonConfig struct {
 	ManagerServer string `json:"manager_server"`
 	ManagerPort   int    `json:"manager_port"`
 	APIURL        string `json:"api_url"`
@@ -15,7 +15,7 @@ type Config struct {
 	SyncInterval  int    `json:"sync_interval"`
 }
 
-func loadConfig(path string) (config *Config, err error) {
+func loadConfig(path string) (config *jsonConfig, err error) {
 	file, err := os.Open(path) // For read access.
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func loadConfig(path string) (config *Config, err error) {
 		return nil, err
 	}
 
-	config = &Config{}
+	config = &jsonConfig{}
 	if err = json.Unmarshal(data, config); err != nil {
 		return nil, err
 	}

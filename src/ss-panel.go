@@ -9,21 +9,7 @@ import (
 	"time"
 )
 
-type User struct {
-	UserID    int    `json:"userId"`
-	Port      int    `json:"port"`
-	Password  string `json:"password"`
-	IsLocked  bool   `json:"isLocked"`
-	IsDeleted bool   `json:"isDeleted"`
-}
-
-type Traffic struct {
-	UserID   string `json:"userId"`
-	FlowUp   int    `json:"flowUp"`
-	FlowDown int    `json:"flowDown"`
-}
-
-func doRequest(config *Config, req *http.Request, res interface{}) error {
+func doRequest(config *jsonConfig, req *http.Request, res interface{}) error {
 	req.Header.Add("Node-Token", config.NodeToken)
 
 	client := &http.Client{
@@ -61,16 +47,16 @@ func doRequest(config *Config, req *http.Request, res interface{}) error {
 	return nil
 }
 
-func fetchUsers(config *Config) (users []User, err error) {
+func fetchUsers(config *jsonConfig) (users []ssUser, err error) {
 	url := config.APIURL + "/api/nodes/" + config.NodeID + "/users"
 	req, _ := http.NewRequest(http.MethodGet, url, nil)
 	return users, doRequest(config, req, &users)
 }
 
-func uploadTraffic(config *Config, data []Traffic) error {
+func uploadTraffic(config *jsonConfig, data []ssTraffic) error {
 	url := config.APIURL + "/api/nodes/" + config.NodeID + "/traffic"
-	jonBody, _ := json.Marshal(data)
-	bodyReader := bytes.NewBuffer(jonBody)
+	jsonBody, _ := json.Marshal(data)
+	bodyReader := bytes.NewBuffer(jsonBody)
 	req, _ := http.NewRequest(http.MethodPost, url, bodyReader)
 	req.Header.Add("Content-Type", "application/json")
 
