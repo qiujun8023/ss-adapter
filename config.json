@@ -1,0 +1,8 @@
+{
+  "manager_server": "127.0.0.1",
+  "manager_port": 8839,
+  "api_url": "http://example.com",
+  "node_id": "1",
+  "node_token": "token",
+  "sync_interval": 30
+}
