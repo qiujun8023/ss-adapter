@@ -88,8 +88,22 @@ func syncTraffic(config *jsonConfig, traffic map[string]ssTraffic) {
 		if isExist == false {
 			continue
 		}
-		item.UserID = user.UserID
-		data = append(data, item)
+
+		lastItem := lastTraffic[port]
+		if lastItem.FlowDown > item.FlowDown || lastItem.FlowUp > item.FlowUp {
+			data = append(data, ssTraffic{
+				user.UserID,
+				item.FlowUp,
+				item.FlowDown,
+			})
+		} else {
+			data = append(data, ssTraffic{
+				user.UserID,
+				item.FlowUp - lastItem.FlowUp,
+				item.FlowDown - lastItem.FlowDown,
+			})
+		}
+
 	}
 
 	lastTraffic = traffic
