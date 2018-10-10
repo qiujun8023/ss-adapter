@@ -1,0 +1,19 @@
+language: go
+
+services:
+  - docker
+
+install:
+  - go get -v github.com/sirupsen/logrus
+
+script:
+  - go build -o ss-adapter ./src
+
+after_succes:
+  - docker build -t $DOCKER_REPOSITORY:libev .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push $DOCKER_REPOSITORY
+
+branches:
+  only:
+    - master

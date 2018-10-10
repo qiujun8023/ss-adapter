@@ -16,7 +16,7 @@ type jsonConfig struct {
 }
 
 func loadConfig(path string) (config *jsonConfig, err error) {
-	file, err := os.Open(path) // For read access.
+	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}

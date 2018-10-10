@@ -9,7 +9,7 @@ type ssUser struct {
 	UserID      int    `json:"userId"`
 	Port        int    `json:"port"`
 	Password    string `json:"password"`
-	oldPassword string `json:"oldPassword"`
+	OldPassword string `json:"oldPassword"`
 	IsLocked    bool   `json:"isLocked"`
 	IsDeleted   bool   `json:"isDeleted"`
 }
@@ -32,7 +32,7 @@ func stopOrStartServer(conn *net.UDPConn, user *ssUser) {
 	} else if isRun && user.IsLocked {
 		log.Infof("stop server at port [%d] reason: disable", user.Port)
 		sendRemoveAccount(conn, user)
-	} else if isRun && user.Password != user.oldPassword {
+	} else if isRun && user.Password != user.OldPassword {
 		log.Infof("stop server at port [%d] reason: password changed", user.Port)
 		sendRemoveAccount(conn, user)
 	} else if !isRun && !user.IsDeleted && !user.IsLocked {
@@ -71,7 +71,7 @@ func syncUser(conn *net.UDPConn, config *jsonConfig) {
 	}
 
 	for port, user := range users {
-		user.oldPassword = lastUser[port].Password
+		user.OldPassword = lastUser[port].Password
 		stopOrStartServer(conn, &user)
 		if user.IsDeleted {
 			delete(lastUser, strconv.Itoa(user.Port))
