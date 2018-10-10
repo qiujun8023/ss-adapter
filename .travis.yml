@@ -9,7 +9,7 @@ install:
 script:
   - go build -o ss-adapter ./src
 
-after_succes:
+after_success:
   - docker build -t $DOCKER_REPOSITORY:libev .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push $DOCKER_REPOSITORY
