@@ -18,7 +18,7 @@ services:
     user: root
     command: ss-manager --manager-address 127.0.0.1:8839 -s 0.0.0.0 -m aes-256-cfb -u -v
   adapter:
-    image: qious/shadowsocks:libev
+    image: qiujun8023/shadowsocks:libev
     restart: always
     network_mode: host
     environment:
